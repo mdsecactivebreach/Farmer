@@ -1,0 +1,10 @@
+Y:\Code\PostEx\Fertliser\Fertliser\bin\Debug\Fertliser.exe.config
+Y:\Code\PostEx\Fertliser\Fertliser\bin\Debug\Fertliser.exe
+Y:\Code\PostEx\Fertliser\Fertliser\bin\Debug\Fertliser.pdb
+Y:\Code\PostEx\Fertliser\Fertliser\bin\Debug\DocumentFormat.OpenXml.dll
+Y:\Code\PostEx\Fertliser\Fertliser\bin\Debug\DocumentFormat.OpenXml.xml
+Y:\Code\PostEx\Fertliser\Fertliser\obj\Debug\Fertliser.csprojAssemblyReference.cache
+Y:\Code\PostEx\Fertliser\Fertliser\obj\Debug\Fertliser.csproj.CoreCompileInputs.cache
+Y:\Code\PostEx\Fertliser\Fertliser\obj\Debug\Fertliser.csproj.CopyComplete
+Y:\Code\PostEx\Fertliser\Fertliser\obj\Debug\Fertliser.exe
+Y:\Code\PostEx\Fertliser\Fertliser\obj\Debug\Fertliser.pdb
