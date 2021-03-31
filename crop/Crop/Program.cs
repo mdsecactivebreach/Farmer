@@ -24,6 +24,7 @@ namespace Crop
             Console.WriteLine("crop.exe \\\\fileserver\\Common\\ crop.url \\\\workstation@8888\\harvest");
             Console.WriteLine("\nOptional arguments:");
             Console.WriteLine("--recurse : write the file to every sub folder of the specified path");
+            Console.WriteLine("--depth=X : number of sub folders deep of the specified path to write the file");
             Console.WriteLine("--clean : remove the file from every sub folder of the specified path");
             return;
         }
@@ -31,10 +32,19 @@ namespace Crop
         {
             var recurse = false;
             var clean = false;
+            var maxDepth = -1;
             if (args.Contains("--recurse"))
                 recurse = true;
             else if (args.Contains("--clean"))
                 clean = true;
+            
+            if (Array.Exists(args,  x => x.Contains("--depth=")))
+            {
+                if (!Int32.TryParse(args.Where(s => s.Contains("--depth=")).First().Split('=')[1], out maxDepth)) {
+                    ShowHelp();
+                    return;
+                }
+            }
 
             Config.targetLocation = args[0].Trim();
             Config.targetFilename = args[1].Trim();
@@ -59,7 +69,7 @@ namespace Crop
                 {
                     if (recurse)
                     {
-                        Config.WalkDirectoryTree(Config.targetLocation);
+                        Config.WalkDirectoryTree(Config.targetLocation, maxDepth);
                         foreach (var folder in Config.folders)
                         {
                             var f = folder;
@@ -72,7 +82,7 @@ namespace Crop
                     }
                     else if (clean)
                     {
-                        Config.WalkDirectoryTree(Config.targetLocation);
+                        Config.WalkDirectoryTree(Config.targetLocation, maxDepth);
                         foreach (var folder in Config.folders)
                         {
                             var f = folder;
@@ -106,7 +116,7 @@ namespace Crop
 
                     if (recurse)
                     {
-                        Config.WalkDirectoryTree(Config.targetLocation);
+                        Config.WalkDirectoryTree(Config.targetLocation, maxDepth);
                         foreach (var folder in Config.folders)
                         {
                             var f = folder;
@@ -119,7 +129,7 @@ namespace Crop
                     }
                     else if (clean)
                     {
-                        Config.WalkDirectoryTree(Config.targetLocation);
+                        Config.WalkDirectoryTree(Config.targetLocation, maxDepth);
                         foreach (var folder in Config.folders)
                         {
                             var f = folder;

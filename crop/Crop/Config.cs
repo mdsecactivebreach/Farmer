@@ -25,11 +25,12 @@ namespace Crop
 
 
 
-        public static void WalkDirectoryTree(string root)
+        public static void WalkDirectoryTree(string root, int maxDepth)
         {
             Stack<string> dirs = new Stack<string>();
+            var currentDepth = 0;
 
-            Console.WriteLine("[*] Walking directory tree for: " + root);
+            Console.WriteLine("[*] Walking directory tree for: {0} until a depth of {1}", root, maxDepth > 0 ? maxDepth.ToString() : "infinity");
             if (!System.IO.Directory.Exists(root))
             {
                 Console.WriteLine("[!] Error, folder does not exist");
@@ -37,10 +38,9 @@ namespace Crop
             }
             dirs.Push(root);
             folders.Add(root);
-
-            while (dirs.Count > 0)
+            
+            while (dirs.Count > 0 && (maxDepth < 0 || currentDepth < maxDepth))
             {
-
                 string currentDir = dirs.Pop();
                 string[] subDirs;
                 try
@@ -66,6 +66,9 @@ namespace Crop
                     Console.WriteLine(e.Message);
                     continue;
                 }
+
+                // Track depth
+                currentDepth += subDirs.Length == 0 ? -1 : 1;
 
                 // Push the subdirectories onto the stack for traversal.
                 // This could also be done before handing the files.
